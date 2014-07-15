@@ -1,0 +1,14 @@
+MultiSelectFieldTest_Department:
+  department1:
+    Name: Kitchens
+  department2:
+    Name: Bathrooms
+  department3:
+    Name: Dungeons
+MultiSelectFieldTest_StaffMember:
+  staffmember1:
+    Name: Tess Tickles
+    Departments: =>MultiSelectFieldTest_Department.department1,=>MultiSelectFieldTest_Department.department2
+  staffmember2:
+    Name: Phil McCreviss
+    Departments: =>MultiSelectFieldTest_Department.department2

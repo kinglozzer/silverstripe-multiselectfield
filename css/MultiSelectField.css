@@ -1,0 +1,63 @@
+.ui-multiselect {
+	width: 100%;
+	overflow: hidden;
+	border-color: #b3b3b3;
+	-webkit-border-radius: 4px;
+	-moz-border-radius: 4px;
+	-ms-border-radius: 4px;
+	-o-border-radius: 4px;
+	border-radius: 4px;
+}
+
+.ui-multiselect div.available,
+.ui-multiselect div.selected {
+	border: 0;
+}
+
+.ui-multiselect .connected-list li {
+	font-size: 12px;
+	margin: 0;
+	padding: 2px 5px;
+	background: #ffffff;
+}
+
+.ui-multiselect .connected-list.ui-sortable li {
+	padding-left: 20px;
+}
+
+.ui-multiselect .connected-list li:nth-child(odd) {
+	background: #f0f4f7;
+}
+
+.ui-multiselect .connected-list li:hover {
+	background: #fffad6;
+}
+
+.ui-multiselect .connected-list li .ui-icon-arrowthick-2-n-s {
+	cursor: move;
+}
+
+.ui-multiselect .connected-list li .ui-icon-minus {
+	cursor: pointer;
+}
+
+.ui-multiselect .ui-widget-header {
+	font-size: inherit;
+}
+
+.ui-multiselect .add-all,
+.ui-multiselect .remove-all {
+   padding: 0;
+}
+
+.ui-multiselect .actions {
+	height: 32px;
+}
+
+.ui-multiselect input.search {
+	width: 65%;
+	height: auto;
+	padding: 7px;
+	margin: 0;
+	border: 1px solid #B3B3B3;
+}
