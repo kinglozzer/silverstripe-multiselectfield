@@ -1,0 +1,20 @@
+{
+	"name": "kinglozzer/multiselectfield",
+	"description": "A sortable multiple select field for managing many-to-many relations",
+	"type": "silverstripe-module",
+	"homepage": "https://github.com/kinglozzer/silverstripe-multiselectfield",
+	"keywords": ["silverstripe", "multiselect", "field", "manymany", "manytomany", "multselectfield"],
+	"authors": [
+		{
+			"name": "Loz Calver",
+			"email": "kinglozzer@gmail.com"
+		}
+	],
+	"license": "BSD-3-Clause",
+	"support": {
+		"issues": "https://github.com/kinglozzer/silverstripe-multiselectfield/issues"
+	},
+	"require": {
+		"silverstripe/framework": "~3.1"
+	}
+}
