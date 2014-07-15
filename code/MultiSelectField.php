@@ -36,7 +36,7 @@ class MultiSelectField extends ListboxField {
 			// Our source needs the currently selected items in the correct sort order first...
 			$source = $source->map()->toArray();
 			$exclude = ( ! empty($source)) ? array_keys($source) : '';
-			$theRest = $class::get()->exclude("ID", $exlude)->map()->toArray();
+			$theRest = $class::get()->exclude("ID", $exclude)->map()->toArray();
 
 			// ... we then add the remaining items in whatever order they come
 			$source = $source + $theRest;
