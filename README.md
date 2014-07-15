@@ -1,4 +1,5 @@
 #MultiSelectField#
+[![Build Status](https://travis-ci.org/kinglozzer/silverstripe-multiselectfield.png?branch=master)](https://travis-ci.org/kinglozzer/silverstripe-multiselectfield)
 
 A drag & drop sortable select field for managing many-to-many relations.
 
