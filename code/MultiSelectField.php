@@ -122,11 +122,14 @@ class MultiSelectField extends ListboxField {
 			$list = $record->$name();
 			$class = $this->dataClass;
 
-			// Get our selected items
-			$selectedList = $class::get()->byIDs(array_values($this->value))->toArray();
-
 			// Clear the list, we're rebuilding it from scratch
 			$list->removeAll();
+
+			// If nothing's been added, that's all we need to do
+			if(empty($this->value)) return;
+
+			// Get our selected items
+			$selectedList = $class::get()->byIDs(array_values($this->value))->toArray();
 
 			// Convert our selected items to an ID => Object associative array
 			$selected = array();

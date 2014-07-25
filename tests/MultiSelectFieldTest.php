@@ -65,6 +65,48 @@ class MultiSelectFieldTest extends SapphireTest {
 		$this->assertEquals($staff3->ID, $staffMembers[2]->ID);
 	}
 
+	/**
+	 * Test that the field correctly saves empty values
+	 * @return void
+	 */
+	public function testEmptyListSaving() {
+		$department = $this->objFromFixture('MultiSelectFieldTest_Department', 'department1');
+		$field = MultiSelectField::create('StaffMembers', '', $department);
+
+		// Set value to null
+		$field->setValue(null);
+		$field->saveInto($department);
+		$department->write();
+		$this->assertEquals(0, $department->StaffMembers()->count());
+
+		// Set value to an empty array
+		$field->setValue(array());
+		$field->saveInto($department);
+		$department->write();
+		$this->assertEquals(0, $department->StaffMembers()->count());
+	}
+
+	/**
+	 * Test that the field correctly saves empty values
+	 * @return void
+	 */
+	public function testEmptySortedListSaving() {
+		$department = $this->objFromFixture('MultiSelectFieldTest_Department', 'department1');
+		$field = MultiSelectField::create('StaffMembers', '', $department, 'Sort');
+
+		// Set value to null
+		$field->setValue(null);
+		$field->saveInto($department);
+		$department->write();
+		$this->assertEquals(0, $department->StaffMembers()->count());
+
+		// Set value to an empty array
+		$field->setValue(array());
+		$field->saveInto($department);
+		$department->write();
+		$this->assertEquals(0, $department->StaffMembers()->count());
+	}
+
 }
 
 class MultiSelectFieldTest_Department extends DataObject implements TestOnly {
