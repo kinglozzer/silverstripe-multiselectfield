@@ -58,7 +58,7 @@ ss.multiselectfields = [];
 				select.find("input.search").addClass("text");
 
 				// Convert actions to UI buttons
-				select.find("a.add-all, a.remove-all")
+				select.find("a.add-all, a.remove-all").not(".ss-ui-button")
 					.addClass("ss-ui-button cms-panel-link ui-corner-all ui-button ui-widget ui-button-text-icon-primary")
 					.wrapInner('<span class="ui-button-text"/>');
 
