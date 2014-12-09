@@ -107,6 +107,20 @@ class MultiSelectFieldTest extends SapphireTest {
 		$this->assertEquals(0, $department->StaffMembers()->count());
 	}
 
+	/**
+	 * Test functionality with ArrayList source
+	 * @return void
+	 */
+	public function testWithArrayList() {
+		$allStaff = MultiSelectFieldTest_StaffMember::get();
+		$source = $allStaff->exclude('Name', 'Phil McCreviss');
+		$department = $this->objFromFixture('MultiSelectFieldTest_Department', 'department2');
+		$field = MultiSelectField::create('StaffMembers', '', $department, 'Sort', $source);
+
+		$source = $field->getSource();
+		$this->assertNotContains('Phil McCreviss', $source);
+	}
+
 }
 
 class MultiSelectFieldTest_Department extends DataObject implements TestOnly {

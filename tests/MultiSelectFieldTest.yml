@@ -12,3 +12,6 @@ MultiSelectFieldTest_StaffMember:
   staffmember2:
     Name: Phil McCreviss
     Departments: =>MultiSelectFieldTest_Department.department2
+  staffmember3:
+    Name: Jack Hoff
+    Departments: =>MultiSelectFieldTest_Department.department2
