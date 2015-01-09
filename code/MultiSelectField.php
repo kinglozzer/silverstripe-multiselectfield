@@ -19,7 +19,9 @@ class MultiSelectField extends ListboxField {
 	 * @param string $sort
 	 * @param SS_List $source
 	 */
-	public function __construct($name, $title, DataObjectInterface $object, $sort = false, SS_List $source = null) {
+	public function __construct(
+		$name, $title, DataObjectInterface $object, $sort = false, SS_List $source = null, $titleField = 'Title'
+	) {
 		$this->setSort($sort);
 
 		if($object->hasMethod($name) && $object->$name() instanceof ManyManyList) {
@@ -41,14 +43,14 @@ class MultiSelectField extends ListboxField {
 
 			// Our source needs the currently selected items in the correct sort order first,
 			// then the rest of the items that are available for selection
-			$dataSource = $dataSource->map()->toArray();
+			$dataSource = $dataSource->map('ID', $titleField)->toArray();
 			$exclude = ( ! empty($dataSource)) ? array_keys($dataSource) : '';
 			$theRest = $class::get()->exclude('ID', $exclude);
 			// If we've been given a list source, filter on those IDs only
 			if($source) {
 				$theRest = $theRest->filter('ID', $source->column('ID'));
 			}
-			$theRest = $theRest->map()->toArray();
+			$theRest = $theRest->map('ID', $titleField)->toArray();
 
 			// ... we then add the remaining items in whatever order they come
 			$dataSource = $dataSource + $theRest;
