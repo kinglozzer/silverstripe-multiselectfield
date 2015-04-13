@@ -18,12 +18,16 @@ class MultiSelectField extends ListboxField {
 	 * @param DataObjectInterface $object
 	 * @param string $sort
 	 * @param SS_List $source
+	 * @param string $titleField
 	 */
 	public function __construct($name, $title, DataObjectInterface $object, $sort = false, SS_List $source = null) {
 		$this->setSort($sort);
 
-		if($object->hasMethod($name) && $object->$name() instanceof ManyManyList) {
+		if($object->many_many($name)) {
 			$dataSource = $object->$name();
+
+			// Check if we're dealing with an UnsavedRelationList
+			$unsaved = ($dataSource instanceof UnsavedRelationList);			
 
 			// Store the relation's class name
 			$class = $dataSource->dataClass();
@@ -34,24 +38,28 @@ class MultiSelectField extends ListboxField {
 				$dataSource = $dataSource->sort($this->getSort());
 			}
 
-			// If we've been given a list source, filter on those IDs only
-			if($source) {
-				$dataSource = $dataSource->filter('ID', $source->column('ID'));
-			}
+			// If we're dealing with an UnsavedRelationList, it'll be empty, so we
+			// can skip this and just use an array of all available items
+			if($unsaved) {
+				$dataSource = $class::get()->map()->toArray();
+			} else {
+				// If we've been given a list source, filter on those IDs only.
+				if($source) $dataSource = $dataSource->filter('ID', $source->column('ID'));
 
-			// Our source needs the currently selected items in the correct sort order first,
-			// then the rest of the items that are available for selection
-			$dataSource = $dataSource->map()->toArray();
-			$exclude = ( ! empty($dataSource)) ? array_keys($dataSource) : '';
-			$theRest = $class::get()->exclude('ID', $exclude);
-			// If we've been given a list source, filter on those IDs only
-			if($source) {
-				$theRest = $theRest->filter('ID', $source->column('ID'));
-			}
-			$theRest = $theRest->map()->toArray();
+				// Our source needs the currently selected items in the correct sort order first,
+				// then the rest of the items that are available for selection
+				$dataSource = $dataSource->map()->toArray();
+				$exclude = ( ! empty($dataSource)) ? array_keys($dataSource) : '';
+				$theRest = $class::get()->exclude('ID', $exclude);
+				// If we've been given a list source, filter on those IDs only
+				if($source) {
+					$theRest = $theRest->filter('ID', $source->column('ID'));
+				}
+				$theRest = $theRest->map()->toArray();
 
-			// ... we then add the remaining items in whatever order they come
-			$dataSource = $dataSource + $theRest;
+				// ... we then add the remaining items in whatever order they come
+				$dataSource = $dataSource + $theRest;
+			}
 		} else {
 			user_error('MultiSelectField::__construct(): MultiSelectField only supports many-to-many relations');
 		}

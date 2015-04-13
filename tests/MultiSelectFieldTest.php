@@ -121,6 +121,24 @@ class MultiSelectFieldTest extends SapphireTest {
 		$this->assertNotContains('Phil McCreviss', $source);
 	}
 
+	/**
+	 * Test functionality with unwritten items
+	 * @return void
+	 */
+	public function testWithUnsavedRelationList() {
+		$department = new MultiSelectFieldTest_Department();
+		$field = MultiSelectField::create('StaffMembers', '', $department);
+
+		$staff = $this->objFromFixture('MultiSelectFieldTest_StaffMember', 'staffmember2');
+		$field->setValue(array($staff->ID));
+		$field->saveInto($department);
+		$department->write();
+
+		$staffMembers = $department->StaffMembers()->map('ID', 'Name')->toArray();
+		$this->assertArrayHasKey($staff->ID, $staffMembers);
+		$this->assertEquals('Phil McCreviss', $staffMembers[$staff->ID]);
+	}
+
 }
 
 class MultiSelectFieldTest_Department extends DataObject implements TestOnly {
