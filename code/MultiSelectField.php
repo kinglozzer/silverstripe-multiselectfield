@@ -21,8 +21,11 @@ class MultiSelectField extends ListboxField {
 	public function __construct($name, $title, DataObjectInterface $object, $sort = false) {
 		$this->setSort($sort);
 
-		if($object->hasMethod($name) && $object->$name() instanceof ManyManyList) {
+		if($object->many_many($name)) {
 			$source = $object->$name();
+
+			// Check if we're dealing with an UnsavedRelationList
+			$unsaved = ($source instanceof UnsavedRelationList);
 
 			// Store the relation's class name
 			$class = $source->dataClass();
@@ -33,13 +36,19 @@ class MultiSelectField extends ListboxField {
 				$source = $source->sort($this->getSort());
 			}
 
-			// Our source needs the currently selected items in the correct sort order first...
-			$source = $source->map()->toArray();
-			$exclude = ( ! empty($source)) ? array_keys($source) : '';
-			$theRest = $class::get()->exclude("ID", $exclude)->map()->toArray();
+			// If we're dealing with an UnsavedRelationList, it'll be empty, so we
+			// can skip this and just use an array of all available items
+			if($unsaved) {
+				$source = $class::get()->map()->toArray();
+			} else {
+				// Our source needs the currently selected items in the correct sort order first...
+				$source = $source->map()->toArray();
+				$exclude = ( ! empty($source)) ? array_keys($source) : '';
+				$theRest = $class::get()->exclude("ID", $exclude)->map()->toArray();
 
-			// ... we then add the remaining items in whatever order they come
-			$source = $source + $theRest;
+				// ... we then add the remaining items in whatever order they come
+				$source = $source + $theRest;
+			}
 		} else {
 			user_error('MultiSelectField::__construct(): MultiSelectField only supports many-to-many relations');
 		}
