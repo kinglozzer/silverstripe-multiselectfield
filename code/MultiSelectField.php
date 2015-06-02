@@ -25,7 +25,7 @@ class MultiSelectField extends ListboxField {
 	) {
 		$this->setSort($sort);
 
-		if($object->many_many($name)) {
+		if($object->many_many($name) || $object->belongs_many_many($name)) {
 			$dataSource = $object->$name();
 
 			// Check if we're dealing with an UnsavedRelationList
