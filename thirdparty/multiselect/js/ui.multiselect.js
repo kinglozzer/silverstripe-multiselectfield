@@ -81,10 +81,7 @@ $.widget("ui.multiselect", {
 				axis: 'y',
 				update: function(event, ui) {
 					// apply the new sort order to the original selectbox
-					that.selectedList.find('li').each(function() {
-						if ($(this).data('optionLink'))
-							$(this).data('optionLink').remove().appendTo(that.element);
-					});
+					that._persistSort();
 				},
 				receive: function(event, ui) {
 					ui.item.data('optionLink').attr('selected', true);
@@ -276,12 +273,26 @@ $.widget("ui.multiselect", {
 			$(this).removeClass('ui-state-hover');
 		});
 	},
+	_persistSort: function() {
+		var that = this;
+
+		that.selectedList.find('li').each(function() {
+			if ($(this).data('optionLink')) {
+				$(this).data('optionLink').remove().appendTo(that.element);
+			}
+		});
+	},
 	_registerAddEvents: function(elements) {
 		var that = this;
 		elements.click(function() {
 			var item = that._setSelected($(this).parent(), true);
 			that.count += 1;
 			that._updateCount();
+
+			if (that.options.sortable) {
+				that._persistSort();
+			}
+
 			return false;
 		});
 		
