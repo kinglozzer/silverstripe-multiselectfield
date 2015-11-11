@@ -29,7 +29,7 @@ class MultiSelectField extends ListboxField {
 			$dataSource = $object->$name();
 
 			// Check if we're dealing with an UnsavedRelationList
-			$unsaved = ($dataSource instanceof UnsavedRelationList);			
+			$unsaved = ($dataSource instanceof UnsavedRelationList);
 
 			// Store the relation's class name
 			$class = $dataSource->dataClass();
@@ -66,6 +66,10 @@ class MultiSelectField extends ListboxField {
 				// ... we then add the remaining items in whatever order they come
 				$dataSource = $dataSource + $theRest;
 			}
+		} elseif ($source instanceof SS_List) {
+			$dataSource = $source->map('ID', $titleField)->toArray();
+		} elseif (is_array($source) && ArrayLib::is_associative($source)) {
+			$dataSource = $source;
 		} else {
 			user_error('MultiSelectField::__construct(): MultiSelectField only supports many-to-many relations');
 		}
