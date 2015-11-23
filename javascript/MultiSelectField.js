@@ -1,73 +1,72 @@
-var ss = ss || {};
-
-ss.multiselectfields = [];
-
 (function($) {
-	$.entwine(function($) {
-		// .multiselect-initialised is added after mulitselect has initialised, otherwise
-	    // multiselect will trigger the changetracker during initialisation
-	    $("select.multiselect-initialised").entwine({
-	        onchange: function() {
-	            this.closest('form').trigger('dirty');
-	        }
-	    });
+    $.entwine(function($) {
+        $('select.multiselectfield').entwine({
+            onchange: function() {
+                // Ensure field is initialised - multiselect can trigger changetracker during initialisation
+                if (this.data('initialised')) {
+                    this.closest('form').trigger('dirty');
+                }
+            },
+            onmatch: function() {
+                this.initialise();
+            },
+            redraw: function() {
+                this.multiselect('refresh');
+            },
+            initialise: function() {
+                if (this.data('initialised')) {
+                    return;
+                }
 
-		$('select.multiselectfield').entwine({
-			onmatch: function() {
-				this.initialise();
-			},
-			redraw: function() {
-				this.multiselect('refresh');
-			},
-			initialise: function() {
-				var self = this,
-					form = this.closest('form');
+                this.multiselect({
+                    availableFirst: true,
+                    searchable: this.is('[data-searchable]'),
+                    sortable: this.is('[data-sortable]')
+                });
 
-				if(self.data('initialised')) {
-					return;
-				}
+                var select = this.parents('.field').find('.ui-multiselect');
 
-				self.multiselect({
-					availableFirst: true,
-					searchable: (self.is('[data-searchable]')) ? true : false,
-					sortable: self.is('[data-sortable]')
-				});
+                // Fix heights - forces field to respect min/max height settings
+                var height = 0,
+                    minHeight = this.attr('data-min-height'),
+                    maxHeight = this.attr('data-max-height'),
+                    lists = select.find('ul.connected-list');
+                
+                lists.each(function(i, item) {
+                    var listHeight = 0;
 
-				var select = $('.ui-multiselect');
+                    $(this).children().not('.ui-helper-hidden-accessible').each(function() {
+                        listHeight += $(this).outerHeight();
+                    });
 
-				// Fix widths
-				select.width('100%');
-				select.find('div.available, div.selected').width('50%');
-				select.find('ul.available, ul.selected').each(function(i, item) {
-					var height = 0;
+                    if (listHeight < minHeight) {
+                        listHeight = minHeight;
+                    } else if (listHeight > maxHeight) {
+                        listHeight = maxHeight;
+                    }
 
-					$(this).children().not('.ui-helper-hidden-accessible').each(function() {
-						height += $(this).outerHeight();
-					});
+                    if (listHeight > height) {
+                        height = listHeight;
+                    }
+                });
 
-					if(height < self.attr('data-min-height')) {
-						height = self.attr('data-min-height');
-					} else if(height > self.attr('data-max-height')) {
-						height = self.attr('data-max-height');
-					}
+                // Set the height
+                lists.height(height);
 
-					$(this).height(height);
-				});
+                // Input styling
+                select.find('input.search').addClass('text');
 
-				// Input styling
-				select.find("input.search").addClass("text");
+                // Convert actions to UI buttons
+                var actions = select.find('a.add-all, a.remove-all');
 
-				// Convert actions to UI buttons
-				select.find("a.add-all, a.remove-all").not(".ss-ui-button")
-					.addClass("ss-ui-button cms-panel-link ui-corner-all ui-button ui-widget ui-button-text-icon-primary")
-					.wrapInner('<span class="ui-button-text"/>');
+                actions.filter('.add-all').attr('data-icon', 'add');
+                actions.filter('.remove-all').attr('data-icon', 'delete');
 
-				select.find("a.add-all").prepend('<span class="ui-button-icon-primary ui-icon btn-icon-add" />');
-				select.find(" a.remove-all").prepend('<span class="ui-button-icon-primary ui-icon btn-icon-delete" />');
+                // Initialise buttons
+                actions.addClass('ss-ui-button').button();
 
-				self.data('initialised', true);
-				self.addClass('multiselect-initialised');
-			}
-		});
-	});
+                this.data('initialised', true);
+            }
+        });
+    });
 })(jQuery);
