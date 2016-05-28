@@ -74,7 +74,11 @@ class MultiSelectField extends ListboxField
                 $dataSource = $dataSource + $theRest;
             }
         } elseif ($source instanceof SS_List) {
-            $dataSource = $source->map('ID', $titleField)->toArray();
+            $dataSource = $source->map('ID', $titleField);
+
+            if (!is_array($dataSource)) {
+                $dataSource = $dataSource->toArray();
+            }
         } elseif (is_array($source) && ArrayLib::is_associative($source)) {
             $dataSource = $source;
         } else {
