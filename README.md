@@ -9,8 +9,8 @@ A drag & drop sortable select field for managing many-to-many relations.
 
 ###Composer:###
 
-```
-require: "kinglozzer/multiselectfield": "dev-master"
+```bash
+$ composer require kinglozzer/multiselectfield:^1.0
 ```
 
 ###Download:###
