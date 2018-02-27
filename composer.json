@@ -1,20 +1,48 @@
 {
-	"name": "kinglozzer/multiselectfield",
-	"description": "A sortable multiple select field for managing many-to-many relations",
-	"type": "silverstripe-module",
-	"homepage": "https://github.com/kinglozzer/silverstripe-multiselectfield",
-	"keywords": ["silverstripe", "multiselect", "field", "manymany", "manytomany", "multselectfield"],
-	"authors": [
-		{
-			"name": "Loz Calver",
-			"email": "kinglozzer@gmail.com"
-		}
-	],
-	"license": "BSD-3-Clause",
-	"support": {
-		"issues": "https://github.com/kinglozzer/silverstripe-multiselectfield/issues"
-	},
-	"require": {
-		"silverstripe/framework": "~3.1"
-	}
+    "name": "kinglozzer/multiselectfield",
+    "type": "silverstripe-vendormodule",
+    "description": "A sortable multiple select field for managing many-to-many relations",
+    "license": "BSD-3-Clause",
+    "keywords": [
+        "silverstripe",
+        "multiselect",
+        "field",
+        "manymany",
+        "manytomany",
+        "multselectfield"
+    ],
+    "homepage": "https://github.com/kinglozzer/silverstripe-multiselectfield",
+    "authors": [
+        {
+            "name": "Loz Calver",
+            "email": "kinglozzer@gmail.com"
+        }
+    ],
+    "support": {
+        "issues": "https://github.com/kinglozzer/silverstripe-multiselectfield/issues"
+    },
+    "require": {
+        "silverstripe/vendor-plugin": "^1.0",
+        "silverstripe/framework": "^4.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^5.7"
+    },
+    "autoload": {
+        "psr-4": {
+            "Kinglozzer\\MultiSelectField\\": "src/",
+            "Kinglozzer\\MultiSelectField\\Tests\\": "tests/"
+        }
+    },
+    "extra": {
+        "installer-name": "multiselectfield",
+        "branch-alias": {
+            "dev-master": "2.0.x-dev"
+        },
+        "expose": [
+            "client"
+        ]
+    },
+    "prefer-stable": true,
+    "minimum-stability": "dev"
 }

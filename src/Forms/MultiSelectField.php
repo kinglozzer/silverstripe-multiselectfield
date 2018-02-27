@@ -1,16 +1,44 @@
 <?php
 
+namespace Kinglozzer\MultiSelectField\Forms;
+
+use SilverStripe\Forms\ListboxField;
+use SilverStripe\ORM\SS_List;
+use SilverStripe\ORM\UnsavedRelationList;
+use SilverStripe\ORM\ArrayLib;
+use SilverStripe\ORM\DataObjectInterface;
+use SilverStripe\View\Requirements;
+use SilverStripe\ORM\FieldType\DBHTMLText;
+
+/**
+ * Class MultiSelectField
+ * @package Kinglozzer\MultiSelectField\Forms
+ */
 class MultiSelectField extends ListboxField
 {
-
+    /**
+     * @var string
+     */
     protected $dataClass;
 
+    /**
+     * @var int
+     */
     protected $minHeight = 300;
 
+    /**
+     * @var int
+     */
     protected $maxHeight = 500;
 
+    /**
+     * @var bool
+     */
     protected $sort = false;
 
+    /**
+     * @var bool
+     */
     protected $searchable = true;
 
     /**
@@ -22,11 +50,16 @@ class MultiSelectField extends ListboxField
      * @param string $titleField
      */
     public function __construct(
-        $name, $title, DataObjectInterface $object, $sort = false, $source = null, $titleField = 'Title'
+        $name,
+        $title,
+        DataObjectInterface $object,
+        $sort = false,
+        $source = null,
+        $titleField = 'Title'
     ) {
         $this->setSort($sort);
 
-        if ($object->many_many($name)) {
+        if ($object->manyMany($name)) {
             $dataSource = $object->$name();
 
             // Check if we're dealing with an UnsavedRelationList
@@ -59,7 +92,7 @@ class MultiSelectField extends ListboxField
                 $theRest = $class::get();
 
                 // Exclude items that we've already found
-                if (! empty($dataSource)) {
+                if (!empty($dataSource)) {
                     $theRest = $theRest->exclude('ID', array_keys($dataSource));
                 }
 
@@ -95,6 +128,7 @@ class MultiSelectField extends ListboxField
     public function setMinHeight($minHeight)
     {
         $this->minHeight = $minHeight;
+
         return $this;
     }
 
@@ -113,6 +147,7 @@ class MultiSelectField extends ListboxField
     public function setMaxHeight($maxHeight)
     {
         $this->maxHeight = $maxHeight;
+
         return $this;
     }
 
@@ -131,6 +166,7 @@ class MultiSelectField extends ListboxField
     public function setSort($sort)
     {
         $this->sort = $sort;
+
         return $this;
     }
 
@@ -149,6 +185,7 @@ class MultiSelectField extends ListboxField
     public function setSearchable($bool)
     {
         $this->searchable = $bool;
+
         return $this;
     }
 
@@ -161,7 +198,7 @@ class MultiSelectField extends ListboxField
     }
 
     /**
-     * @param DataObjectInterface $record 
+     * @param DataObjectInterface $record
      * @return void
      */
     public function saveInto(DataObjectInterface $record)
@@ -184,7 +221,7 @@ class MultiSelectField extends ListboxField
             $selectedList = $class::get()->byIDs(array_values($this->value))->toArray();
 
             // Convert our selected items to an ID => Object associative array
-            $selected = array();
+            $selected = [];
             foreach ($selectedList as $item) {
                 $selected[$item->ID] = $item;
             }
@@ -193,7 +230,7 @@ class MultiSelectField extends ListboxField
             foreach ($this->value as $order => $id) {
                 $item = $selected[$id];
 
-                $list->add($item, array($sortField => $order));
+                $list->add($item, [$sortField => $order]);
             }
         } else {
             // If we're not sorting, ListboxField can handle saving the items
@@ -209,7 +246,7 @@ class MultiSelectField extends ListboxField
         $attributes = parent::getAttributes();
 
         // Disable changetracking (we handle that manually) and chosen
-        $attributes['class'] .= ' no-change-track multiselectfield no-chzn';
+        $attributes['class'] .= ' no-change-track multiselectfield no-chosen';
         $attributes['data-searchable'] = $this->getSearchable();
         $attributes['data-sortable'] = (boolean) $this->getSort();
         $attributes['data-min-height'] = $this->getMinHeight();
@@ -220,14 +257,14 @@ class MultiSelectField extends ListboxField
 
     /**
      * @param array $properties
-     * @return HTMLText
+     * @return DBHTMLText
      */
-    public function Field($properties = array())
+    public function Field($properties = [])
     {
-        Requirements::css(MULTISELECT_BASE . '/thirdparty/multiselect/css/ui.multiselect.css');
-        Requirements::css(MULTISELECT_BASE . '/css/MultiSelectField.css');
-        Requirements::javascript(MULTISELECT_BASE . '/thirdparty/multiselect/js/ui.multiselect.js');
-        Requirements::javascript(MULTISELECT_BASE . '/javascript/MultiSelectField.js');
+        Requirements::css('kinglozzer/multiselectfield: client/thirdparty/multiselect/css/ui.multiselect.css');
+        Requirements::css('kinglozzer/multiselectfield: client/css/MultiSelectField.css');
+        Requirements::javascript('kinglozzer/multiselectfield: client/thirdparty/multiselect/js/ui.multiselect.js');
+        Requirements::javascript('kinglozzer/multiselectfield: client/javascript/MultiSelectField.js');
 
         return parent::Field($properties);
     }

@@ -10,7 +10,7 @@ A drag & drop sortable select field for managing many-to-many relations.
 ### Composer:
 
 ```bash
-$ composer require kinglozzer/multiselectfield:^1.0
+$ composer require kinglozzer/multiselectfield:^2.0
 ```
 
 ### Download:
@@ -24,45 +24,45 @@ The field currently only supports many-to-many relations. The constructor takes 
 The following is an example of how to use `MultiSelectField` in a simple many-to-many relationship with a "Sort" extra field:
 
 ```php
-class Department extends DataObject {
-	
-	private static $db = array(
-		'Name' => 'Varchar'
-	);
+class Department extends DataObject
+{
+    private static $db = [
+        'Name' => 'Varchar',
+    ];
 
-	private static $many_many = array(
-		'StaffMembers' => 'StaffMember'
-	);
+    private static $many_many = [
+        'StaffMembers' => 'StaffMember',
+    ];
 
-	private static $many_many_extraFields = array(
-		'StaffMembers' => array(
-			'Sort' => 'Int'
-		)
-	);
+    private static $many_many_extraFields = [
+        'StaffMembers' => [
+            'Sort' => 'Int',
+        ]
+    ];
 
-	/**
-	 * @return FieldList
-	 */
-	public function getCMSFields() {
-		$fields = FieldList::create();
+    /**
+     * @return FieldList
+     */
+    public function getCMSFields()
+    {
+        $fields = FieldList::create();
 
-		$staffField = MultiSelectField::create('StaffMembers', 'Staff members', $this, 'Sort');
-		$fields->addFieldToTab('Root.Main', $staffField);
+        $staffField = MultiSelectField::create('StaffMembers', 'Staff members', $this, 'Sort');
+        $fields->addFieldToTab('Root.Main', $staffField);
 
-		return $fields;
-	}
-
+        return $fields;
+    }
 }
-
-class StaffMember extends DataObject {
-	
-	private static $db = array(
-		'Name' => 'Varchar'
-	);
-
-	private static $many_many = array(
-		'Departments' => 'Department'
-	);
-
+```
+```php
+class StaffMember extends DataObject
+{
+    private static $db = [
+        'Name' => 'Varchar',
+    ];
+    
+    private static $many_many = [
+        'Departments' => 'Department',
+    ];
 }
 ```
