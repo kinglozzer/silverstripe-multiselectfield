@@ -18,11 +18,11 @@ class MultiSelectField extends ListboxField
      * @param string $title
      * @param DataObjectInterface $object
      * @param string $sort
-     * @param SS_List $source
+     * @param SS_List|array $source
      * @param string $titleField
      */
     public function __construct(
-        $name, $title, DataObjectInterface $object, $sort = false, SS_List $source = null, $titleField = 'Title'
+        $name, $title, DataObjectInterface $object, $sort = false, $source = null, $titleField = 'Title'
     ) {
         $this->setSort($sort);
 
