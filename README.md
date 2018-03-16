@@ -24,6 +24,8 @@ The field currently only supports many-to-many relations. The constructor takes 
 The following is an example of how to use `MultiSelectField` in a simple many-to-many relationship with a "Sort" extra field:
 
 ```php
+use Kinglozzer\MultiSelectField\Forms\MultiSelectField;
+
 class Department extends DataObject
 {
     private static $db = [
@@ -54,13 +56,14 @@ class Department extends DataObject
     }
 }
 ```
+
 ```php
 class StaffMember extends DataObject
 {
     private static $db = [
         'Name' => 'Varchar',
     ];
-    
+
     private static $many_many = [
         'Departments' => 'Department',
     ];
