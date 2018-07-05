@@ -17,10 +17,24 @@
 
 .ui-multiselect .connected-list li {
     overflow: hidden;
-    font-size: 12px;
+    height: 28px;
     margin: 0;
-    padding: 2px 20px 2px 5px;
+    padding: 4px 20px 4px 5px;
     background: #ffffff;
+    font-size: 13px;
+    line-break: 28px;
+}
+
+
+.ui-multiselect .connected-list li a.action {
+    top: 0; bottom: 0;
+    width: 15px;
+}
+
+.ui-multiselect .connected-list li a.action .ui-icon {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
 }
 
 .ui-multiselect .connected-list.ui-sortable li {
@@ -43,26 +57,26 @@
     cursor: pointer;
 }
 
+.ui-multiselect .count {
+    padding: .3846rem .7692rem;
+}
+
 .ui-multiselect .ui-widget-header {
+    padding: 10px;
     font-size: inherit;
 }
 
-.ui-multiselect .add-all {
-    color: #368b39;
-}
-
-.ui-multiselect .remove-all {
-    color: #da273b;
-}
-
-.ui-multiselect .actions {
-    height: 32px;
+.ui-multiselect .ui-widget-header a {
+    margin: 0;
+    padding: .3846rem .7692rem;
+    color: #fff;
 }
 
 .ui-multiselect input.search {
     width: 65%;
     height: auto;
-    padding: 7px;
+    padding: .3846rem .7692rem;
     margin: 0;
-    border: 1px solid #B3B3B3;
+    border: 1px solid #b3b3b3;
+    color: #566b8d;
 }

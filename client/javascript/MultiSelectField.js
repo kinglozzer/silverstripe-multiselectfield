@@ -31,7 +31,7 @@
                     minHeight = this.attr('data-min-height'),
                     maxHeight = this.attr('data-max-height'),
                     lists = select.find('ul.connected-list');
-                
+
                 lists.each(function(i, item) {
                     var listHeight = 0;
 
@@ -58,12 +58,10 @@
 
                 // Convert actions to UI buttons
                 var actions = select.find('a.add-all, a.remove-all');
+                actions.addClass('btn');
 
-                actions.filter('.add-all').attr('data-icon', 'add');
-                actions.filter('.remove-all').attr('data-icon', 'delete');
-
-                // Initialise buttons
-                actions.addClass('ss-ui-button').button();
+                actions.filter('.add-all').addClass('btn-primary font-icon-plus');
+                actions.filter('.remove-all').addClass('btn-danger font-icon-trash-bin');
 
                 this.data('initialised', true);
             }
