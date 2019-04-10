@@ -3,6 +3,7 @@
 namespace Kinglozzer\MultiSelectField\Forms;
 
 use SilverStripe\Forms\ListboxField;
+use SilverStripe\ORM\DataObject;
 use SilverStripe\ORM\SS_List;
 use SilverStripe\ORM\UnsavedRelationList;
 use SilverStripe\ORM\ArrayLib;
@@ -59,7 +60,8 @@ class MultiSelectField extends ListboxField
     ) {
         $this->setSort($sort);
 
-        if ($object->manyMany($name)) {
+        $schema = DataObject::getSchema();
+        if ($schema->manyManyComponent(get_class($object), $name)) {
             $dataSource = $object->$name();
 
             // Check if we're dealing with an UnsavedRelationList
