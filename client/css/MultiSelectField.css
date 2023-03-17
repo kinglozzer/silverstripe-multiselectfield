@@ -25,6 +25,11 @@
     line-break: 28px;
 }
 
+.ui-multiselect .connected-list li span.ui-icon-arrowthick-2-n-s {
+    top: 50%;
+    margin-top: 0;
+    transform: translateY(-50%);
+}
 
 .ui-multiselect .connected-list li a.action {
     top: 0; bottom: 0;
